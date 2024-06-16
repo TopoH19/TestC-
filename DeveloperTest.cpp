@@ -11,6 +11,18 @@ using json = nlohmann::json;
 
 using namespace std;
 
+bool documentType(const std::string& str);
+void splitJson(const string& string_json, vector<employeeInformation>& employees);
+void splitXml(const std::string& string_xml, vector<employeeInformation>& employees);
+double averageSalary(const std::vector<employeeInformation>& employees);
+employeeInformation highestSalary(const std::vector<employeeInformation>& employees);
+void sortByID(std::vector<employeeInformation>& employees);
+
+//method to validate if the string received is a json and return true it does. if return false we already know that is a xml 
+bool documentType(const std::string& str){
+    std::regex jsonRegex("\\{.*\\}");
+    return std::regex_match(str, jsonRegex);
+}
 
 int main(int argc, string employee){
     std::vector<employeeInformation> employees;
@@ -19,7 +31,7 @@ int main(int argc, string employee){
     if(documentType == true){
         splitJson(employee,employees);
     }else{
-        //splitXml(employee,employees);
+        splitXml(employee,employees);
     }
     
     averageSalary(employees);
@@ -30,11 +42,7 @@ int main(int argc, string employee){
     return 0;
 }
 
-//method to validate if the string received is a json and return true it does. if return false we already know that is a xml 
-bool documentType(const std::string& str){
-    std::regex jsonRegex("\\{.*\\}");
-    return std::regex_match(str, jsonRegex);
-}
+
 
 //information of the user
 struct employeeInformation {
@@ -101,7 +109,7 @@ double averageSalary(const std::vector<employeeInformation>& employees){
         averageSalary = 0.0;
     }else{
         for (int i = 0; i < employees.size(); i++) {
-            averageSalary += employees.salary;
+            averageSalary += employees[i].salary;
         }
         averageSalary = averageSalary/employees.size();
     }
@@ -109,16 +117,14 @@ double averageSalary(const std::vector<employeeInformation>& employees){
 }
 
 //Method to validate the highest salary and return the data of the highest paid
-employeeInformation highestSalary(const std::vector<employeeInformation>& employees){
+employeeInformation highestSalary(const std::vector<employeeInformation>& employees) {
     double highestSalary = 0.0;
     employeeInformation highestPaid;
-    if(employees.empty()){
-        employeeInformation highestPaid = null;
-    }else{
-        for (int i = 0; i < employees.size(); i++) {
-            if(employees.salary > highestSalary){
-                highestSalary = employees.salary;
-                employeeInformation highestPaid = (employees.name,employees.id,employees.department,employees.salary);
+    if (!employees.empty()) {
+        for (const auto& emp : employees) {
+            if (emp.salary > highestSalary) {
+                highestSalary = emp.salary;
+                highestPaid = emp;
             }
         }
     }
@@ -126,8 +132,8 @@ employeeInformation highestSalary(const std::vector<employeeInformation>& employ
 }
 
 //method to sort all the employees
-void sortByID(std::vector<employeeInformation>& employees){
-    std::sort(employees.begin(), employees.end(),[](const employees.id& a, const employee.id& b) {
+void sortByID(std::vector<employeeInformation>& employees) {
+    std::sort(employees.begin(), employees.end(), [](const employeeInformation& a, const employeeInformation& b) {
         return a.id < b.id;
     });
 }
