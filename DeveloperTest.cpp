@@ -59,7 +59,7 @@ void splitJson(const string& string_json, vector<employeeInformation>& employees
             cerr << "Data incomplete" << endl;
         }
     } catch (const json::parse_error& e) {
-        cerr << "Error al parsear JSON: " << e.what() << endl;
+        cerr << "Error to parse JSON: " << e.what() << endl;
     }
 }
 
@@ -67,12 +67,10 @@ void splitJson(const string& string_json, vector<employeeInformation>& employees
 void splitXml(const std::string& string_xml, std::vector<EmployeeInformation>& employees) {
     pugi::xml_document doc;
     pugi::xml_parse_result result = doc.load_string(string_xml.c_str());
-
     if (!result) {
-        std::cerr << "Error al cargar el XML: " << result.description() << std::endl;
+        std::cerr << "Error with the XML file: " << result.description() << std::endl;
         return;
     }
-
     try {
         for (pugi::xml_node employee_node : doc.select_nodes("//employee")) {
             pugi::xml_node userName_node = employee_node.child("userName");
@@ -88,11 +86,11 @@ void splitXml(const std::string& string_xml, std::vector<EmployeeInformation>& e
                 employee.salary = salary_node.text().as_double();
                 employees.push_back(employee);
             } else {
-                std::cerr << "Datos incompletos para un empleado." << std::endl;
+                std::cerr << "Data Imcomplete" << std::endl;
             }
         }
     } catch (const pugi::xml_parse_error& e) {
-        std::cerr << "Error con el XML: " << e.what() << std::endl;
+        std::cerr << "Error to parse XML: " << e.what() << std::endl;
     }
 }
 
