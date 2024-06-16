@@ -17,7 +17,7 @@ bool documentType(const std::string& str){
     return std::regex_match(str, jsonRegex);
 }
 
-int main(int argc, string employee){
+int main(int argc, char* argv[]){
     std::vector<employeeInformation> employees;
     // if document type is true means that we have to exceute all the steps for json document, else xml
     bool documentType = documentType(employee);
