@@ -11,13 +11,6 @@ using json = nlohmann::json;
 
 using namespace std;
 
-bool documentType(const std::string& str);
-void splitJson(const string& string_json, vector<employeeInformation>& employees);
-void splitXml(const std::string& string_xml, vector<employeeInformation>& employees);
-double averageSalary(const std::vector<employeeInformation>& employees);
-employeeInformation highestSalary(const std::vector<employeeInformation>& employees);
-void sortByID(std::vector<employeeInformation>& employees);
-
 //method to validate if the string received is a json and return true it does. if return false we already know that is a xml 
 bool documentType(const std::string& str){
     std::regex jsonRegex("\\{.*\\}");
