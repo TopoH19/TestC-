@@ -64,9 +64,37 @@ void splitJson(const string& string_json, vector<employeeInformation>& employees
 }
 
 //method to parse all the data employee and after that add the employee information to the vector
-/*
+void splitXml(const std::string& string_xml, std::vector<EmployeeInformation>& employees) {
+    pugi::xml_document doc;
+    pugi::xml_parse_result result = doc.load_string(string_xml.c_str());
 
-*/
+    if (!result) {
+        std::cerr << "Error al cargar el XML: " << result.description() << std::endl;
+        return;
+    }
+
+    try {
+        for (pugi::xml_node employee_node : doc.select_nodes("//employee")) {
+            pugi::xml_node userName_node = employee_node.child("userName");
+            pugi::xml_node id_node = employee_node.child("id");
+            pugi::xml_node department_node = employee_node.child("department");
+            pugi::xml_node salary_node = employee_node.child("salary");
+
+            if (userName_node && id_node && department_node && salary_node) {
+                EmployeeInformation employee;
+                employee.userName = userName_node.text().get();
+                employee.id = id_node.text().as_int();
+                employee.department = department_node.text().get();
+                employee.salary = salary_node.text().as_double();
+                employees.push_back(employee);
+            } else {
+                std::cerr << "Datos incompletos para un empleado." << std::endl;
+            }
+        }
+    } catch (const pugi::xml_parse_error& e) {
+        std::cerr << "Error con el XML: " << e.what() << std::endl;
+    }
+}
 
 //Method to calculate the average salary for all the employees
 double averageSalary(const std::vector<employeeInformation>& employees){
